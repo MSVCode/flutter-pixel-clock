@@ -139,13 +139,15 @@ class _DigitalClockState extends State<DigitalClock> {
     }
 
     if (!_is24HourFormat) {
+      final minSize = MediaQuery.of(context).size.width*3/5;
+      
       String ampm = _dateTime.hour > 12 ? "PM" : "AM";
       out.add(
         Positioned(
           child: Text(
             ampm,
             style: TextStyle(
-              fontSize: MediaQuery.of(context).size.height / 10,
+              fontSize: minSize / 10,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -329,56 +331,60 @@ class _DigitalClockState extends State<DigitalClock> {
     final colors = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
-    final height = MediaQuery.of(context).size.height;
-    final defaultStyle = TextStyle(
-      color: colors[_Element.text],
-      fontFamily: 'calibri',
-      fontSize: height / 15,
-    );
+    final minSize = MediaQuery.of(context).size.width*3/5;//flutter-clock ratio
 
     return Container(
       color: colors[_Element.background],
       child: Column(
         children: <Widget>[
-          DefaultTextStyle(
-            style: defaultStyle,
-            child: Container(
-              height: height * 0.2,
-              child: Row(
-                children: <Widget>[
-                  NiceTile(
-                    header: "Weather",
-                    headerSize: defaultStyle.fontSize / 1.5,
-                    child: WeatherTile(
-                      _weatherCondition,
-                      size: defaultStyle.fontSize * 1.5,
+          Container(
+              height: minSize * 0.2,
+              child: LayoutBuilder(
+                builder: (ctx, constraint) {
+                  final minSize = constraint.maxWidth;
+                  final defaultStyle = TextStyle(
+                    color: colors[_Element.text],
+                    fontFamily: 'calibri',
+                    fontSize: minSize / 25,
+                  );
+                  return DefaultTextStyle(
+                    style: defaultStyle,
+                    child: Row(
+                      children: <Widget>[
+                        NiceTile(
+                          header: "Weather",
+                          headerSize: defaultStyle.fontSize / 1.5,
+                          child: WeatherTile(
+                            _weatherCondition,
+                            size: defaultStyle.fontSize * 1.5,
+                          ),
+                        ),
+                        // HorizontalDivider(),
+                        NiceTile(
+                          header: "Temperature",
+                          headerSize: defaultStyle.fontSize / 1.5,
+                          child: Text("$_temperatureString $_temperatureRange"),
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: NiceTile(
+                              header: "Date",
+                              headerSize: defaultStyle.fontSize / 1.5,
+                              child: Text(
+                                  "${_dateTime.year}/${_dateTime.month}/${_dateTime.day}"),
+                            ),
+                          ),
+                        ),
+                        // RaisedButton(
+                        //   child: Text("Change time"),
+                        //   onPressed: editAndBuild,
+                        // ),
+                      ],
                     ),
-                  ),
-                  // HorizontalDivider(),
-                  NiceTile(
-                    header: "Temperature",
-                    headerSize: defaultStyle.fontSize / 1.5,
-                    child: Text("$_temperatureString $_temperatureRange"),
-                  ),
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: NiceTile(
-                        header: "Date",
-                        headerSize: defaultStyle.fontSize / 1.5,
-                        child: Text(
-                            "${_dateTime.year}/${_dateTime.month}/${_dateTime.day}"),
-                      ),
-                    ),
-                  ),
-                  // RaisedButton(
-                  //   child: Text("Change time"),
-                  //   onPressed: editAndBuild,
-                  // ),
-                ],
-              ),
-            ),
-          ),
+                  );
+                },
+              )),
           Divider(
             color: colors[_Element.text],
           ),
