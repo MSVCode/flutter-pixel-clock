@@ -139,8 +139,8 @@ class _DigitalClockState extends State<DigitalClock> {
     }
 
     if (!_is24HourFormat) {
-      final minSize = MediaQuery.of(context).size.width*3/5;
-      
+      final minSize = MediaQuery.of(context).size.width * 3 / 5;
+
       String ampm = _dateTime.hour > 12 ? "PM" : "AM";
       out.add(
         Positioned(
@@ -331,7 +331,8 @@ class _DigitalClockState extends State<DigitalClock> {
     final colors = Theme.of(context).brightness == Brightness.light
         ? _lightTheme
         : _darkTheme;
-    final minSize = MediaQuery.of(context).size.width*3/5;//flutter-clock ratio
+    final minSize =
+        MediaQuery.of(context).size.width * 3 / 5; //flutter-clock ratio
 
     return Container(
       color: colors[_Element.background],
