@@ -1,6 +1,7 @@
 name: digital_clock
-description: Digital clock.
+description: Digital pixel clock.
 version: 1.0.0+1
+author: MSVCode (msvcode@gmail.com)
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
